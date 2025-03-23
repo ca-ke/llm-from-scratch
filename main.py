@@ -12,13 +12,23 @@ def main():
     preprocessed = re.split(r'([,.:;?_!"()\']|--|\s)', text)
     preprocessed = [item.strip() for item in preprocessed if item.strip()]
 
-    vocab = {token: integer for integer, token in enumerate(sorted(set(preprocessed)))}
+    tokens = sorted(set(preprocessed))
+    tokens.extend(["<|endoftext|>", "<|unk|>"])
+
+    vocab = {token: integer for integer, token in enumerate(tokens)}
 
     tokenizer = Tokenizer(strategy=WhitespaceTokenizationStrategy(vocab))
     print(tokenizer.tokenize(text))
 
     tokenizer = Tokenizer(strategy=RegexTokenizationStrategy(vocab))
-    print(tokenizer.tokenize(text))
+    print("Known words")
+    ids = tokenizer.tokenize(text)
+    print(ids)
+    print(tokenizer.text(ids))
+    print("One word unknow")
+    ids = tokenizer.tokenize(text + " xablau")
+    print(ids)
+    print(tokenizer.text(ids))
 
 
 if __name__ == "__main__":

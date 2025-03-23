@@ -9,3 +9,6 @@ class Tokenizer:
     def tokenize(self, text: str) -> List[int]:
         return self.strategy.encode(text)
 
+    def text(self, ids: List[int]) -> str:
+        return self.strategy.decode(ids)
+

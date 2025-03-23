@@ -20,10 +20,10 @@ class WhitespaceTokenizationStrategy(TokenizationStrategy):
         self._int_to_str = {i: s for s, i in vocab.items()}
 
     def encode(self, text: str) -> List[int]:
-        return list(map(lambda x: self._str_to_int[x], text.split()))
+        return [self._str_to_int.get(token, self._str_to_int.get("<|unk|>")) for token in text.split()]
 
     def decode(self, ids: List[int]) -> str:
-        return " ".join(map(lambda x: self._int_to_str[x], ids))
+        return " ".join(self._int_to_str.get(i, "<|unk|>") for i in ids)
 
 
 class RegexTokenizationStrategy(TokenizationStrategy):
@@ -35,10 +35,10 @@ class RegexTokenizationStrategy(TokenizationStrategy):
         preprocessed = re.split(r'([,.:;?_!"()\']|--|\s)', text)
 
         preprocessed = [item.strip() for item in preprocessed if item.strip()]
-        ids = [self._str_to_int[s] for s in preprocessed]
+        ids = [self._str_to_int.get(item, self._str_to_int.get("<|unk|>")) for item in preprocessed]
         return ids
 
     def decode(self, ids: List) -> str:
-        text = " ".join(map(lambda x: self._int_to_str[x], ids))
+        text = " ".join(self._int_to_str.get(i, "<|unk|>") for i in ids)
         text = re.sub(r'\s+([,.?!"()\'])', r"\1", text)
         return text
