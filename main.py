@@ -1,4 +1,5 @@
 from tokenization_strategy import (
+    RegexTokenizationStrategy,
     WhitespaceTokenizationStrategy,
 )
 from tokenizer import Tokenizer
@@ -14,7 +15,10 @@ def main():
     vocab = {token: integer for integer, token in enumerate(sorted(set(preprocessed)))}
 
     tokenizer = Tokenizer(strategy=WhitespaceTokenizationStrategy(vocab))
-    print(tokenizer.tokenize("This is a sample text"))
+    print(tokenizer.tokenize(text))
+
+    tokenizer = Tokenizer(strategy=RegexTokenizationStrategy(vocab))
+    print(tokenizer.tokenize(text))
 
 
 if __name__ == "__main__":

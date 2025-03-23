@@ -26,12 +26,12 @@ class WhitespaceTokenizationStrategy(TokenizationStrategy):
         return " ".join(map(lambda x: self._int_to_str[x], ids))
 
 
-class SimpleTokenizer(TokenizationStrategy):
+class RegexTokenizationStrategy(TokenizationStrategy):
     def __init__(self, vocab: dict):
         self._str_to_int = vocab
         self._int_to_str = {i: s for s, i in vocab.items()}
 
-    def tokenize(self, text: str) -> List[str]:
+    def encode(self, text: str) -> List[int]:
         preprocessed = re.split(r'([,.:;?_!"()\']|--|\s)', text)
 
         preprocessed = [item.strip() for item in preprocessed if item.strip()]
