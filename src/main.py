@@ -17,7 +17,7 @@ def main():
         
     strategy = BPETokenizationStrategy()
     strategy.train(text, vocab_size=1000, allowed_special={"<|endoftext|>"})
-    input_text = "Jack embraced beauty through art and life."
+    input_text = "Xablau."
     print(strategy.encode(input_text))
     
 if __name__ == "__main__":
