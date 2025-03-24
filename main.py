@@ -1,4 +1,5 @@
 from tokenization_strategy import (
+    BPETokenizationStrategy,
     RegexTokenizationStrategy,
     WhitespaceTokenizationStrategy,
 )
@@ -11,24 +12,15 @@ def main():
     text = "This is a sample text"
     preprocessed = re.split(r'([,.:;?_!"()\']|--|\s)', text)
     preprocessed = [item.strip() for item in preprocessed if item.strip()]
+    special_chars = ["<|endoftext|>", "<|unk|>"]
 
     tokens = sorted(set(preprocessed))
-    tokens.extend(["<|endoftext|>", "<|unk|>"])
+    tokens.extend(special_chars)
 
     vocab = {token: integer for integer, token in enumerate(tokens)}
 
-    tokenizer = Tokenizer(strategy=WhitespaceTokenizationStrategy(vocab))
-    print(tokenizer.tokenize(text))
-
-    tokenizer = Tokenizer(strategy=RegexTokenizationStrategy(vocab))
-    print("Known words")
-    ids = tokenizer.tokenize(text)
-    print(ids)
-    print(tokenizer.text(ids))
-    print("One word unknow")
-    ids = tokenizer.tokenize(text + " xablau")
-    print(ids)
-    print(tokenizer.text(ids))
+    strategy = BPETokenizationStrategy()
+    strategy.train(text, allowed_special=special_chars)
 
 
 if __name__ == "__main__":
