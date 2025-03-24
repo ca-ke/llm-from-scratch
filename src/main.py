@@ -1,9 +1,6 @@
 from tokenization_strategy import (
     BPETokenizationStrategy,
-    RegexTokenizationStrategy,
-    WhitespaceTokenizationStrategy,
 )
-from tokenizer import Tokenizer
 
 import re
 
@@ -16,12 +13,10 @@ def main():
 
     tokens = sorted(set(preprocessed))
     tokens.extend(special_chars)
-
-    vocab = {token: integer for integer, token in enumerate(tokens)}
-
+    
     strategy = BPETokenizationStrategy()
-    strategy.train(text, vocab_size=10, allowed_special=special_chars)
-    print(strategy.get_vocab())
+    strategy.train(text, vocab_size=300, allowed_special=special_chars)
+    strategy.encode(text)
 
 
 if __name__ == "__main__":

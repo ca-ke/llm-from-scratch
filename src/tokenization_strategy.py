@@ -64,7 +64,7 @@ class BPETokenizationStrategy(TokenizationStrategy):
         text: str,
         vocab_size: int,
         allowed_special={"<|endoftext|>", "<|unk|>"},
-    ):
+    ):  
         assert text
         assert vocab_size > len(allowed_special)
         
@@ -79,8 +79,8 @@ class BPETokenizationStrategy(TokenizationStrategy):
                 new_id = len(self._vocab)
                 self._vocab[new_id] = token
                 self._inverse_vocab[token] = new_id
-
         token_ids = [self._inverse_vocab[char] for char in text if char in self._inverse_vocab]
+        
         for new_id in range(len(self._vocab), vocab_size):
             try:
                 pair_id = get_freq_pair(token_ids, mode="most")
@@ -100,3 +100,15 @@ class BPETokenizationStrategy(TokenizationStrategy):
 
     def get_vocab(self) -> Dict:
         return self._vocab
+    
+    def encode(self, text: str) -> List[int]:
+        tokens = text.split()
+        token_ids = []
+        
+        for token in tokens:
+            print(f"Oi - {token} - {self._inverse_vocab.get(token)}")
+            token_id = self._inverse_vocab.get(token, self._inverse_vocab.get("<|unk|>"))
+            token_ids.append(token_id)
+        
+        return token_ids
+        
