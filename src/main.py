@@ -20,7 +20,8 @@ def main():
     vocab = {token: integer for integer, token in enumerate(tokens)}
 
     strategy = BPETokenizationStrategy()
-    strategy.train(text, allowed_special=special_chars)
+    strategy.train(text, vocab_size=10, allowed_special=special_chars)
+    print(strategy.get_vocab())
 
 
 if __name__ == "__main__":
