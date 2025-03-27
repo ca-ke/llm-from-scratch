@@ -1,6 +1,5 @@
-import os
-
-import urllib3
+from gpt_dataset import GPTDataset
+from tokenizer import Tokenizer
 from tokenization_strategy import (
     BPETokenizationStrategy,
 )
@@ -17,8 +16,9 @@ def main():
         
     strategy = BPETokenizationStrategy()
     strategy.train(text, vocab_size=1000, allowed_special={"<|endoftext|>"})
-    input_text = "Xablau."
-    print(strategy.encode(input_text))
+    dataset = GPTDataset(tokenizer=Tokenizer(strategy=strategy))
+    dataset.create_chunks(text, max_length=4, stride=1)
+    print(dataset[1])
     
 if __name__ == "__main__":
     main()

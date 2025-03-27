@@ -12,6 +12,9 @@ build/
 .eggs/
 develop-eggs/
 
+# IDE
+.cursor
+
 # Virtual environments
 venv/
 env/
