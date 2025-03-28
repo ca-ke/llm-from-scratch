@@ -1,0 +1,46 @@
+GPT Loader System Analysis
+=========================
+
+The GPT loader system consists of several interconnected components:
+
+1. GPTDataset (gpt_dataset.py):
+- A PyTorch Dataset implementation
+- Takes a tokenizer as input
+- Creates chunks of text with a sliding window approach
+- Stores input and target IDs for training
+- Key methods:
+    * create_chunks(): Creates overlapping sequences with specified length and stride
+    * __getitem__(): Returns input and target pairs for training
+
+2. CreateDataLoader (create_dataloader.py):
+- Wraps the GPTDataset with PyTorch's DataLoader
+- Provides configuration for:
+    * batch_size (default: 2)
+    * shuffle (default: True)
+    * drop_last (default: True)
+    * num_workers (default: 0)
+
+3. Tokenization System:
+- Has multiple tokenization strategies (WhitespaceTokenizationStrategy, RegexTokenizationStrategy, BPETokenizationStrategy)
+- BPE (Byte Pair Encoding) is the main implementation used in the project
+- Features include:
+    * Vocabulary management
+    * Special token handling
+    * Training of merge rules
+    * Encoding and decoding capabilities
+
+System Flow (as seen in main.py):
+1. Text is loaded from a file
+2. BPE tokenization strategy is initialized and trained
+3. A tokenizer is created with the strategy
+4. GPTDataset is created with the tokenizer
+5. Text is chunked into sequences
+6. DataLoader is created to batch and shuffle the data
+
+Implementation Best Practices:
+- Using proper abstraction layers
+- Implementing standard PyTorch interfaces
+- Providing configurable parameters
+- Supporting different tokenization strategies
+- Including special token handling
+- Using efficient data loading mechanisms
